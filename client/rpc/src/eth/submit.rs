@@ -33,6 +33,8 @@ use sp_runtime::{
 	transaction_validity::TransactionSource,
 };
 
+use log::{debug, error, info, warn};
+
 use fc_rpc_core::types::*;
 use fp_rpc::{ConvertTransaction, ConvertTransactionRuntimeApi, EthereumRuntimeRPCApi};
 
@@ -216,6 +218,7 @@ where
 	}
 
 	pub fn send_raw_transaction(&self, bytes: Bytes) -> BoxFuture<Result<H256>> {
+		info!("send_raw_transaction: {:?}", bytes);
 		let slice = &bytes.0[..];
 		if slice.len() == 0 {
 			return Box::pin(future::err(internal_err("transaction data is empty")));
